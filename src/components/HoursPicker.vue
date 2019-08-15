@@ -1,7 +1,10 @@
 <template>
   <section>
     <b-field group-multiline>
-      <p>{{new Date(datePicked).toLocaleDateString()}}</p>
+      <p class="title is-6">
+        <strong>Booking on</strong>
+        {{formatedDate}}
+      </p>
     </b-field>
 
     <b-table
@@ -21,34 +24,40 @@
 
         <b-table-column field="Booked" label="Booked" centered>
           <b-button v-if="props.row.booked" disabled type="is-danger">Unavalible</b-button>
-          <b-button v-else @click="BookAnHour(props.row.start_time)" type="is-success">Avalible</b-button>
+          <b-button v-else @click="openBookingModalForm(props.row)" type="is-success">Book it Now</b-button>
         </b-table-column>
-      </template>
-
-      <template slot="empty">
-        <section class="section">
-          <div class="content has-text-grey has-text-centered">
-            <p>
-              <b-icon icon="emoticon-sad" size="is-large"></b-icon>
-            </p>
-            <p>Nothing here.</p>
-          </div>
-        </section>
       </template>
     </b-table>
   </section>
 </template>
 
 <script>
-import { dbHourToLocaleHour } from "../utils/dateFormater"
+import {
+  numberHourToFullFormat,
+  fullFormatToNumberHour,
+  dbFormatDate
+} from "../utils/dateFormater"
+import moment from "moment"
+import Modal from "./Modal"
 export default {
   created: function() {
-    console.log(dbHourToLocaleHour("09"))
-
-    fetch("https://jsonplaceholder.typicode.com/todos/1")
-      .then(response => response.json())
-      .then(json => console.log(json))
-    console.log(this.datePicked)
+    this.fillData([])
+    this.isLoading = true
+    this.dbdate = dbFormatDate(this.datePicked)
+    fetch(`${process.env.VUE_APP_ROOT_API}bookings/${this.dbdate}`)
+      .then(response => {
+        response.json().then(fetchData => {
+          this.data = []
+          this.isLoading = false
+          this.fillData(fetchData)
+        })
+      })
+      .catch(err => {
+        this.isLoading = false
+      })
+  },
+  components: {
+    Modal
   },
   props: {
     datePicked: {
@@ -56,65 +65,59 @@ export default {
       required: true
     }
   },
+  computed: {
+    formatedDate: function() {
+      return moment(this.datePicked).format("DD-MM-YYYY")
+    }
+  },
   data() {
-    const data = [
-      {
-        start_time: "09:00 AM",
-        ending_time: "10:00 AM",
-        booked: false
-      },
-      {
-        start_time: "10:00 AM",
-        ending_time: "11:00 AM",
-        booked: false
-      },
-      {
-        start_time: "11:00 AM",
-        ending_time: "12:00 PM",
-        booked: false
-      },
-      {
-        start_time: "12:00 PM",
-        ending_time: "01:00 PM",
-        booked: false
-      },
-      {
-        start_time: "01:00 PM",
-        ending_time: "02:00 PM",
-        booked: false
-      },
-      {
-        start_time: "02:00 PM",
-        ending_time: "03:00 PM",
-        booked: false
-      },
-      {
-        start_time: "04:00 PM",
-        ending_time: "05:00 PM",
-        booked: false
-      },
-      {
-        start_time: "05:00 PM",
-        ending_time: "06:00 PM",
-        booked: false
-      }
-    ]
-
     return {
-      data,
+      workingHours: [9, 10, 11, 12, 13, 14, 15, 16, 17],
+      data: [],
       isEmpty: false,
-      isBordered: false,
+      isBordered: true,
       isStriped: true,
       isNarrowed: true,
       isHoverable: true,
       isFocusable: false,
       isLoading: false,
-      hasMobileCards: true
+      hasMobileCards: true,
+      dbdate: ""
     }
   },
   methods: {
-    BookAnHour(hourToBook) {
-      console.log(hourToBook)
+    openBookingModalForm(props) {
+      const { start_time, ending_time } = props
+      const localeDate = this.formatedDate
+      this.$buefy.modal.open({
+        parent: this,
+        component: Modal,
+        props: { start_time, ending_time, localeDate, dbdate: this.dbdate },
+        hasModalCard: true,
+        customClass: "custom-class"
+      })
+    },
+    fillData({ data }) {
+      let bookedDataArray = data
+      let booked = false
+      this.workingHours.forEach((hour, index) => {
+        booked = this.isHourBooked(hour, bookedDataArray)
+        this.data.push({
+          start_time: numberHourToFullFormat(hour),
+          ending_time: numberHourToFullFormat(hour + 1),
+          booked
+        })
+      })
+    },
+    isHourBooked(hour, BookedArray) {
+      if (BookedArray === undefined || BookedArray.length == 0) {
+        return false
+      }
+      if (hour == BookedArray[0].booking_hour) {
+        BookedArray.shift()
+        return true
+      }
+      return false
     }
   }
 }
@@ -122,5 +125,17 @@ export default {
 <style scoped>
 button {
   width: 6em;
+}
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.1s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+/* .component-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.table.is-narrow td,
+.table.is-narrow th {
+  text-align: center;
 }
 </style>

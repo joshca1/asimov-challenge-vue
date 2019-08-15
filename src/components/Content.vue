@@ -9,34 +9,14 @@
 import DatePicker from "./DatePicker.vue"
 import moment from "moment"
 export default {
-  name: "HelloWorld",
+  name: "Content",
   components: {
     DatePicker
   },
   props: {
     msg: String
   },
-  mounted() {
-    console.log(moment().format("YYYY"))
-    console.log(moment().format("MM"))
-    // fetch("http://192.168.0.107/api/v1/bookings", {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json"
-    //   }
-    // })
-    //   .then(res => {
-    //     console.log(res)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
-  },
-  methods: {
-    testMoment() {
-      console.log(moment("16", "h").format("hh:mm"))
-    }
-  }
+  methods: {}
 }
 </script>
 

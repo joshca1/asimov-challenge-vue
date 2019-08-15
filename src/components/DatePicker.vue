@@ -12,7 +12,6 @@
               @input="dayPicked"
               :events="events"
               :unselectable-days-of-week="[0, 6]"
-              :indicators="indicators"
             ></b-datepicker>
           </div>
         </article>
@@ -20,14 +19,16 @@
 
       <div class="tile is-parent">
         <article class="tile is-child notification skullarticle">
-          <div class="content">
-            <p class="title is-6">Pick a date</p>
-            <p class="subtitle is-6">Book an hour with me</p>
+          <div class="section">
             <div class="content">
-              <HoursPicker :date-picked="datePicked" v-if="showHoursTable"></HoursPicker>
-              <figure v-else class="image is-4by3">
-                <img src="../assets/dance-skeleton.png" />
-              </figure>
+              <transition name="component-fade" mode="out-in">
+                <HoursPicker :date-picked="datePicked" :key="componentKey" v-if="showHoursTable"></HoursPicker>
+                <div v-else class="content skeleton-image">
+                  <figure class="image is-4by3">
+                    <img src="../assets/dance-skeleton.png" />
+                  </figure>
+                </div>
+              </transition>
             </div>
           </div>
         </article>
@@ -37,33 +38,33 @@
 </template>
 
 <script>
-const thisMonth = new Date().getMonth()
-import HoursPicker from "./HoursPicker"
 import moment from "moment"
+const YEAR = moment().year()
+const MONTH = moment().month()
+const DAY = moment().date()
+import HoursPicker from "./HoursPicker"
+import { formatToFullDate } from "../utils/dateFormater"
 export default {
   components: {
     HoursPicker
   },
-  computed: {
-    indicators() {
-      return this.bars ? "bars" : "dots"
-    }
-  },
+  computed: {},
   data() {
     return {
-      date: new Date(2017, thisMonth, 1),
+      date: new Date(YEAR, MONTH, DAY),
       events: [],
       bars: false,
       showHoursTable: false,
-      datePicked: "2019-01-01"
+      datePicked: "",
+      componentKey: 0
     }
   },
   methods: {
     dayPicked(date) {
+      this.componentKey = formatToFullDate(date)
       this.datePicked = date
       this.showHoursTable = true
-    },
-    loadHoursTable() {}
+    }
   }
 }
 </script>
@@ -75,6 +76,7 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .skullarticle {
   color: white;
   background: url("../assets/background-graveyard.jpg");
@@ -82,5 +84,11 @@ export default {
 }
 .is-parent {
   min-height: 600px;
+}
+article {
+  padding-right: 1.5em;
+}
+.skeleton-image {
+  margin-top: 20px;
 }
 </style>

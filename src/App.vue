@@ -1,19 +1,19 @@
 <template>
   <div id="app">
     <Navbar></Navbar>
-    <HelloWorld />
+    <Content />
     <Footer></Footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld"
-import Navbar from "./components/Narbar"
+import Content from "./components/Content"
+import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 export default {
   name: "app",
   components: {
-    HelloWorld,
+    Content,
     Navbar,
     Footer
   }
