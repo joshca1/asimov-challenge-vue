@@ -21,3 +21,13 @@ export const dbFormatDate = date => {
   //converts a (DD-MM-YYY ) to a (YYYY-MM-DD) format
   return moment(date).format('YYYY-MM-DD')
 }
+
+export const todayDateToDbFormat = () => {
+  return moment(new Date()).format('YYYY-MM-DD')
+}
+
+export const addDayDateToDbFormat = day => {
+  return moment(new Date())
+    .add(day, 'day')
+    .format('YYYY-MM-DD')
+}

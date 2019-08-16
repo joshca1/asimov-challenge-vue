@@ -26,7 +26,12 @@
             </b-field>
           </section>
           <footer class="modal-card-foot">
-            <b-button type="button is-success" native-type="submit" :loading="loading" :disabled="loading">Confirm</b-button>
+            <b-button
+              type="button is-success"
+              native-type="submit"
+              :loading="loading"
+              :disabled="loading"
+            >Confirm</b-button>
             <b-button type="is-danger" @click="$parent.close()">Cancel</b-button>
           </footer>
         </div>
@@ -82,19 +87,25 @@ export default {
       }
 
       const data = fetchPostData(`bookings`, bookingBody)
-      data.then(res => {
-        if (res.error) {
-          errorMessage(
-            "Hour Already Booked, or you try to book two hours in a row."
-          )
-        } else {
-          succesMessage("Booking Created!")
+      data
+        .then(res => {
+          if (res.error) {
+            errorMessage(
+              "Hour Already Booked, or you try to book two hours in a row."
+            )
+          } else {
+            succesMessage("Booking Created!")
+            this.reloadHours()
+          }
+          this.loading = false
+          this.$parent.close()
+        })
+        .catch(error => {
+          this.loading = false
+          errorMessage("Error on Booking")
+          this.$parent.close()
           this.reloadHours()
-          console.log(this.reloadHours)
-        }
-        this.loading = false
-        this.$parent.close()
-      })
+        })
     }
   }
 }

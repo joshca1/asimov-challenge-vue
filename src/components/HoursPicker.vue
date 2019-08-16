@@ -42,7 +42,6 @@ import moment from "moment"
 import Modal from "./Modal"
 export default {
   created: function() {
-    console.log(process.env)
     this.getDataFromApi()
   },
   components: {
