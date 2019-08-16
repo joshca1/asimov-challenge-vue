@@ -1,8 +1,5 @@
-export const fetchPostData = (
-  url = 'https://dry-sea-37886.herokuapp.com/api/v1/',
-  unparsedBody
-) => {
-  return fetch(url, {
+export const fetchPostData = (url, unparsedBody) => {
+  return fetch('https://dry-sea-37886.herokuapp.com/api/v1/bookings', {
     method: 'POST',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
@@ -12,10 +9,8 @@ export const fetchPostData = (
   })
 }
 
-export const fetchGetData = (
-  url = 'https://dry-sea-37886.herokuapp.com/api/v1/'
-) => {
-  return fetch(url, {
+export const fetchGetData = url => {
+  return fetch('https://dry-sea-37886.herokuapp.com/api/v1/bookings', {
     method: 'GET',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' }
