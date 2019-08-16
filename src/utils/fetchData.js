@@ -1,4 +1,4 @@
-export const fetchPostData = async (url, unparsedBody) => {
+export const fetchPostData = (url, unparsedBody) => {
   return fetch(url, {
     method: 'POST',
     mode: 'cors',

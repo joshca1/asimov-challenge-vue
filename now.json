@@ -1,0 +1,5 @@
+{
+  "env": {
+    "VUE_APP_ROOT_API": "https://dry-sea-37886.herokuapp.com/api/v1/"
+  }
+}
