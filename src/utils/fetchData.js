@@ -1,4 +1,7 @@
-export const fetchPostData = (url, unparsedBody) => {
+export const fetchPostData = (
+  url = 'https://dry-sea-37886.herokuapp.com/api/v1/',
+  unparsedBody
+) => {
   return fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -9,7 +12,9 @@ export const fetchPostData = (url, unparsedBody) => {
   })
 }
 
-export const fetchGetData = url => {
+export const fetchGetData = (
+  url = 'https://dry-sea-37886.herokuapp.com/api/v1/'
+) => {
   return fetch(url, {
     method: 'GET',
     mode: 'cors',
