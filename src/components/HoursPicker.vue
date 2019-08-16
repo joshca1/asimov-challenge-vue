@@ -42,6 +42,7 @@ import moment from "moment"
 import Modal from "./Modal"
 export default {
   created: function() {
+    console.log(process.env)
     this.getDataFromApi()
   },
   components: {
@@ -117,7 +118,7 @@ export default {
       this.fillData([])
       this.isLoading = true
       this.dbdate = dbFormatDate(this.datePicked)
-      const data = fetchGetData(`bookings/${this.dbdate}`)
+      const data = fetchGetData(`${this.dbdate}`)
       data
         .then(fetchData => {
           this.data = []
