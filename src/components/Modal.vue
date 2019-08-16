@@ -81,10 +81,7 @@ export default {
         date: this.dbdate
       }
 
-      const data = fetchPostData(
-        `${process.env.VUE_APP_ROOT_API}bookings`,
-        bookingBody
-      )
+      const data = fetchPostData(`bookings`, bookingBody)
       data.then(res => {
         if (res.error) {
           errorMessage(

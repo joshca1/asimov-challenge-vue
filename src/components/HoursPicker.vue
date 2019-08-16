@@ -117,9 +117,7 @@ export default {
       this.fillData([])
       this.isLoading = true
       this.dbdate = dbFormatDate(this.datePicked)
-      const data = fetchGetData(
-        `${process.env.VUE_APP_ROOT_API}bookings/${this.dbdate}`
-      )
+      const data = fetchGetData(`bookings/${this.dbdate}`)
       data
         .then(fetchData => {
           this.data = []

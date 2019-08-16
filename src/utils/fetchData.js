@@ -9,8 +9,8 @@ export const fetchPostData = (url, unparsedBody) => {
   })
 }
 
-export const fetchGetData = url => {
-  return fetch('https://dry-sea-37886.herokuapp.com/api/v1/bookings', {
+export const fetchGetData = date => {
+  return fetch(`https://dry-sea-37886.herokuapp.com/api/v1/bookings/${date}`, {
     method: 'GET',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' }
