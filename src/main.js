@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import buefy from './plugins/buefy'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
 Vue.config.productionTip = false
 
 new Vue({

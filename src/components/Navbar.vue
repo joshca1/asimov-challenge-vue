@@ -23,6 +23,8 @@
     <div id="navbarasimov" :class="{'is-active':isActiveBurger}" class="navbar-menu">
       <div class="navbar-start">
         <a class="navbar-item">Booking a dance 💀</a>
+        <router-link to="/foo">Booking a dance 💀</router-link>
+        <router-link to="/foo">Upcoming Dates 📅</router-link>
 
         <a class="navbar-item">Upcoming Dates 📅</a>
       </div>

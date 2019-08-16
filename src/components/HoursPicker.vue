@@ -64,7 +64,7 @@ export default {
       workingHours: [9, 10, 11, 12, 13, 14, 15, 16, 17],
       data: [],
       isEmpty: false,
-      isBordered: true,
+      isBordered: false,
       isStriped: true,
       isNarrowed: true,
       isHoverable: true,

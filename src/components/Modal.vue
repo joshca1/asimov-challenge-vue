@@ -26,7 +26,7 @@
             </b-field>
           </section>
           <footer class="modal-card-foot">
-            <b-button type="button is-success" native-type="submit" :loading="loading">Confirm</b-button>
+            <b-button type="button is-success" native-type="submit" :loading="loading" :disabled="loading">Confirm</b-button>
             <b-button type="is-danger" @click="$parent.close()">Cancel</b-button>
           </footer>
         </div>

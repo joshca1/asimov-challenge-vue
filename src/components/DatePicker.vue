@@ -8,8 +8,9 @@
           <div class="content pickercontent">
             <b-datepicker
               inline
-              v-model="date"
               @input="dayPicked"
+              :first-day-of-week="1"
+              :min-date="date"
               :events="events"
               :unselectable-days-of-week="[0, 6]"
             ></b-datepicker>
@@ -20,6 +21,7 @@
       <div class="tile is-parent">
         <article class="tile is-child notification skullarticle">
           <div class="section">
+            <img src="../assets/bloodytext.png" />
             <div class="content">
               <transition name="component-fade" mode="out-in">
                 <HoursPicker :date-picked="datePicked" :key="componentKey" v-if="showHoursTable"></HoursPicker>
@@ -83,7 +85,7 @@ export default {
   object-fit: cover;
 }
 .is-parent {
-  min-height: 600px;
+  min-height: 300px;
 }
 article {
   padding-right: 1.5em;

@@ -2,15 +2,15 @@
   <footer class="footer">
     <div class="content has-text-centered">
       <div>
-        <strong>Created by Jose Antonio Cañizales with 💚</strong>
         <p>
-          <span>
-            <a href="https://www.linkedin.com/in/jose-cañizales-461413151/">Linked in</a>
-          </span>
-          <span>
-            <a href="https://josecanizales-23f8a.firebaseapp.com/">Personal Page</a>
-          </span>
+          <strong>Created by Jose Antonio Cañizales with 💚</strong>
         </p>
+        <span>
+          <a href="https://www.linkedin.com/in/jose-cañizales-461413151/">Linked in</a>
+        </span>
+        <span>
+          <a href="https://josecanizales-23f8a.firebaseapp.com/">Personal Page</a>
+        </span>
       </div>
     </div>
   </footer>
@@ -21,9 +21,12 @@ strong {
 }
 footer {
   border-radius: 4px;
-  padding: 20px;
-  height: 15%;
+  padding: 10px 0px;
+  height: 20%;
   background-color: #31363a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 a {
   color: #a5b2b9;
