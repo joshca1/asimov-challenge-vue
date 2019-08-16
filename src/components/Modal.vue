@@ -26,8 +26,8 @@
             </b-field>
           </section>
           <footer class="modal-card-foot">
-            <button class="button is-success">Confirm</button>
-            <button class="button" type="button" @click="$parent.close()">Cancel</button>
+            <b-button type="button is-success" native-type="submit" :loading="loading">Confirm</b-button>
+            <b-button type="is-danger" @click="$parent.close()">Cancel</b-button>
           </footer>
         </div>
       </form>
@@ -36,9 +36,10 @@
 </template>
 <script>
 import { fullFormatToNumberHour } from "../utils/dateFormater"
+import { fetchPostData } from "../utils/fetchData"
+import { succesMessage, errorMessage } from "../utils/messages"
 export default {
   props: {
-    //["start_time", "ending_time", "localeDate"],
     start_time: {
       type: String,
       required: true
@@ -54,11 +55,16 @@ export default {
     dbdate: {
       type: String,
       required: true
+    },
+    reloadHours: {
+      type: Function,
+      required: false
     }
   },
   data() {
     return {
-      email: ""
+      email: "",
+      loading: false
     }
   },
   computed: {
@@ -68,30 +74,30 @@ export default {
   },
   methods: {
     bookAdate(e) {
+      this.loading = true
       const bookingBody = {
         email: this.email,
         hour: fullFormatToNumberHour(this.start_time),
         date: this.dbdate
       }
-      fetch(`${process.env.VUE_APP_ROOT_API}bookings`, {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bookingBody)
+
+      const data = fetchPostData(
+        `${process.env.VUE_APP_ROOT_API}bookings`,
+        bookingBody
+      )
+      data.then(res => {
+        if (res.error) {
+          errorMessage(
+            "Hour Already Booked, or you try to book two hours in a row."
+          )
+        } else {
+          succesMessage("Booking Created!")
+          this.reloadHours()
+          console.log(this.reloadHours)
+        }
+        this.loading = false
+        this.$parent.close()
       })
-        .then(response => {
-          response
-            .json()
-            .then(created => {
-              console.log(created)
-            })
-            .catch(er => {
-              console.log("error1", er)
-            })
-        })
-        .catch(err => {
-          console.log("error2", err)
-        })
     }
   }
 }

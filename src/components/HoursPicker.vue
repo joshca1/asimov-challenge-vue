@@ -37,24 +37,12 @@ import {
   fullFormatToNumberHour,
   dbFormatDate
 } from "../utils/dateFormater"
+import { fetchGetData } from "../utils/fetchData"
 import moment from "moment"
 import Modal from "./Modal"
 export default {
   created: function() {
-    this.fillData([])
-    this.isLoading = true
-    this.dbdate = dbFormatDate(this.datePicked)
-    fetch(`${process.env.VUE_APP_ROOT_API}bookings/${this.dbdate}`)
-      .then(response => {
-        response.json().then(fetchData => {
-          this.data = []
-          this.isLoading = false
-          this.fillData(fetchData)
-        })
-      })
-      .catch(err => {
-        this.isLoading = false
-      })
+    this.getDataFromApi()
   },
   components: {
     Modal
@@ -92,7 +80,13 @@ export default {
       this.$buefy.modal.open({
         parent: this,
         component: Modal,
-        props: { start_time, ending_time, localeDate, dbdate: this.dbdate },
+        props: {
+          start_time,
+          ending_time,
+          localeDate,
+          dbdate: this.dbdate,
+          reloadHours: this.getDataFromApi
+        },
         hasModalCard: true,
         customClass: "custom-class"
       })
@@ -118,6 +112,23 @@ export default {
         return true
       }
       return false
+    },
+    getDataFromApi() {
+      this.fillData([])
+      this.isLoading = true
+      this.dbdate = dbFormatDate(this.datePicked)
+      const data = fetchGetData(
+        `${process.env.VUE_APP_ROOT_API}bookings/${this.dbdate}`
+      )
+      data
+        .then(fetchData => {
+          this.data = []
+          this.isLoading = false
+          this.fillData(fetchData)
+        })
+        .catch(err => {
+          this.isLoading = false
+        })
     }
   }
 }
