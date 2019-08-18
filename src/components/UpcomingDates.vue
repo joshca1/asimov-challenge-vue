@@ -123,8 +123,8 @@ export default {
           status = "Done.."
           statusClass = "is-danger"
         }
-        return [status, statusClass]
       }
+      return [status, statusClass]
     }
   }
 }
